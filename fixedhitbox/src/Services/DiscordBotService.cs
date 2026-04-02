@@ -1,5 +1,6 @@
 ﻿using DSharpPlus;
 using fixedhitbox.Commands;
+using fixedhitbox.Events;
 using fixedhitbox.Options;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -56,6 +57,7 @@ public sealed class DiscordBotService : BackgroundService
         });
         
         CommandMap.RegisterAllCommands(builder, _options.DebugGuildId);
+        await DiscordEvents.RegisterAll(builder);
         
         _client = builder.Build();
         
