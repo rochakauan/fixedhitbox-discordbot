@@ -1,5 +1,6 @@
 ﻿using DSharpPlus;
 using fixedhitbox.Commands;
+using fixedhitbox.Data;
 using fixedhitbox.Events;
 using fixedhitbox.Options;
 using fixedhitbox.Services.Apis;
@@ -10,26 +11,23 @@ using Microsoft.Extensions.Options;
 
 namespace fixedhitbox.Services;
 
-public sealed class DiscordBotService : BackgroundService
+public sealed class DiscordBotService(
+    IOptions<DiscordOptions> options,
+    ILogger<DiscordBotService> logger,
+    AppDbContext db) : BackgroundService
 {
-    private readonly DiscordOptions _options;
-    private readonly ILogger<DiscordBotService> _logger;
-    private DiscordClient? _client;
 
-    public DiscordBotService(
-        IOptions<DiscordOptions> options,
-        ILogger<DiscordBotService> logger)
-    {
-        _options = options.Value;
-        _logger = logger;
-    }
+    private readonly AppDbContext _db = db;
+    private readonly DiscordOptions _options = options.Value;
+    private readonly ILogger<DiscordBotService> _logger = logger;
+    private DiscordClient? _client;
 
     public override async Task StartAsync(CancellationToken cancellationToken)
     {
         var builder = DiscordClientBuilder.CreateDefault(
             _options.Token,
             DiscordIntents.Guilds);
-        
+
         builder.ConfigureEventHandlers(events =>
         {
             events
@@ -44,7 +42,7 @@ public sealed class DiscordBotService : BackgroundService
                     return Task.CompletedTask;
                 });
         });
-        
+
         builder.ConfigureLogging(logging =>
         {
             logging.ClearProviders();
@@ -71,16 +69,16 @@ public sealed class DiscordBotService : BackgroundService
             //LinkAredlUserService
             //...TODO
         });
-        
+
         CommandMap.RegisterAllCommands(builder, _options.DebugGuildId);
         await DiscordEvents.RegisterAll(builder);
-        
+
         _client = builder.Build();
-        
+
         await _client.ConnectAsync();
         _logger.LogInformation(
             "[FixedHitbox] Connected to Discord! Debug server id: {debugServerId}", _options.DebugGuildId);
-      
+
         var commands = await _client.GetGlobalApplicationCommandsAsync();
         var ping = commands.FirstOrDefault(x => x.Name == "ping");
 
@@ -89,7 +87,7 @@ public sealed class DiscordBotService : BackgroundService
             await _client.DeleteGlobalApplicationCommandAsync(ping.Id);
             _logger.LogInformation("[FixedHitbox] Ping command deleted.");
         }
-        
+
         await base.StartAsync(cancellationToken);
     }
 

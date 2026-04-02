@@ -1,10 +1,14 @@
 ﻿using DotNetEnv;
+using fixedhitbox.config;
+using fixedhitbox.Data;
 using fixedhitbox.Options;
 using fixedhitbox.Services;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.EntityFrameworkCore;
 
 namespace fixedhitbox;
 
@@ -17,6 +21,14 @@ internal static class Program
             Env.Load();
 
             var builder = Host.CreateApplicationBuilder(args);
+
+            builder.Services
+                .AddDbContext<AppDbContext>((sp, options) =>
+                {
+                    var config = sp.GetRequiredService<IConfiguration>();
+
+                    options.UseSqlite(DbConfig.ResolveConnectionString(config));
+                });
 
             builder.Services
                 .AddOptions<DiscordOptions>()
@@ -61,7 +73,7 @@ internal static class Program
             Console.ForegroundColor = ConsoleColor.Red;
             foreach (var failure in ex.Failures)
                 await Console.Error.WriteLineAsync("Configuration error: " + failure);
-            
+
             Console.ResetColor();
             return 1;
         }

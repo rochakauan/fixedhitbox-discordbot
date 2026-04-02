@@ -1,6 +1,7 @@
 ﻿using DSharpPlus;
 using DSharpPlus.Commands;
 using DSharpPlus.Commands.Processors.SlashCommands;
+using fixedhitbox.Commands.Modules.Aredl;
 using fixedhitbox.Commands.Modules.Diagnostics;
 using fixedhitbox.Commands.Processors;
 
@@ -18,7 +19,9 @@ public static class CommandMap
                 NamingPolicy = new OrdinalKebabCaseInteractionNamingPolicy()
             });
 
-            extension.AddCommands([typeof(PingCommand)]);
+            extension.AddCommands([
+                typeof(PingCommand),
+                typeof(LinkAredlCommand)]);
             extension.AddProcessor(slashCommandProcessor);
 
         }, new CommandsConfiguration
