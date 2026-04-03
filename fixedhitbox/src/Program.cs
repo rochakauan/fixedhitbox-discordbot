@@ -3,12 +3,12 @@ using fixedhitbox.config;
 using fixedhitbox.Data;
 using fixedhitbox.Options;
 using fixedhitbox.Services;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace fixedhitbox;
 
@@ -22,12 +22,15 @@ internal static class Program
 
             var builder = Host.CreateApplicationBuilder(args);
 
-            builder.Services
-                .AddDbContext<AppDbContext>((sp, options) =>
+            builder.Configuration
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", false, true)
+                .AddJsonFile("botsettings.json", true, true)
+                .AddEnvironmentVariables();
+            
+            builder.Services.AddDbContext<AppDbContext>(options =>
                 {
-                    var config = sp.GetRequiredService<IConfiguration>();
-
-                    options.UseSqlite(DbConfig.ResolveConnectionString(config));
+                    options.UseSqlite(DbConfig.ResolveConnectionString(builder.Configuration));
                 });
 
             builder.Services
@@ -46,14 +49,11 @@ internal static class Program
             builder.Services.AddHostedService<DiscordBotService>();
 
             builder.Logging.ClearProviders();
-            builder.Logging.AddSimpleConsole(options =>
-            {
-                options.TimestampFormat = "[HH:mm:ss] ";
-                options.SingleLine = true;
-            });
-
-            builder.Logging.SetMinimumLevel(LogLevel.Information);
-            builder.Logging.AddFilter("DSharpPlus", LogLevel.Warning);
+            builder.Logging.SetMinimumLevel(LogLevel.Warning);
+            builder.Logging.AddConfiguration(builder.Configuration.GetSection("Logging"));
+            builder.Logging.AddSimpleConsole();
+            
+            builder.Logging.AddFilter("fixedhitbox", LogLevel.Information);
 
             using var host = builder.Build();
             await host.RunAsync();

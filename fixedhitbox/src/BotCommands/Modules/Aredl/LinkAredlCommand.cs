@@ -2,10 +2,10 @@ using DSharpPlus.Commands;
 using DSharpPlus.Commands.Processors.SlashCommands;
 using DSharpPlus.Commands.Processors.SlashCommands.Localization;
 using DSharpPlus.Entities;
-using fixedhitbox.Commands.Translations;
+using fixedhitbox.BotCommands.Translations;
 using fixedhitbox.Utils;
 
-namespace fixedhitbox.Commands.Modules.Aredl;
+namespace fixedhitbox.BotCommands.Modules.Aredl;
 
 public sealed class LinkAredlCommand
 {

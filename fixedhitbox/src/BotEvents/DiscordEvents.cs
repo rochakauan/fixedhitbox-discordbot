@@ -1,7 +1,7 @@
 ﻿using DSharpPlus;
-using fixedhitbox.Events.Updates;
+using fixedhitbox.BotEvents.Updates;
 
-namespace fixedhitbox.Events;
+namespace fixedhitbox.BotEvents;
 
 internal static class DiscordEvents
 {

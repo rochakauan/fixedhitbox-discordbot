@@ -24,31 +24,31 @@
     </ItemGroup>
 
     <ItemGroup>
-      <EmbeddedResource Update="Resources\Strings.resx">
+      <EmbeddedResource Update="Resources\Langs.resx">
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>Strings.Designer.cs</LastGenOutput>
       </EmbeddedResource>
-      <EmbeddedResource Update="Resources\Strings.pt-BR.resx">
+      <EmbeddedResource Update="Resources\Langs.pt-BR.resx">
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>Strings.pt-BR.Designer.cs</LastGenOutput>
       </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Update="Resources\Strings.Designer.cs">
+      <Compile Update="Resources\Langs.Designer.cs">
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
-        <DependentUpon>Strings.resx</DependentUpon>
+        <DependentUpon>Langs.resx</DependentUpon>
       </Compile>
-      <Compile Update="Resources\Strings.pt-BR.Designer.cs">
+      <Compile Update="Resources\Langs.pt-BR.Designer.cs">
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
-        <DependentUpon>Strings.pt-BR.resx</DependentUpon>
+        <DependentUpon>Langs.pt-BR.resx</DependentUpon>
       </Compile>
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Commands\Modules\" />
+      <Folder Include="BotCommands\Modules\" />
     </ItemGroup>
 
 </Project>

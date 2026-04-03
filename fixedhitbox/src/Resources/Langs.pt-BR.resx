@@ -25,7 +25,8 @@
   </data>
     <data name="Ping_Response" xml:space="preserve">
     <value>🏓 Gateway: {0:F0}ms
-⏱️ Resposta: {1}ms.</value>
+⏱️ Resposta: {1}ms.
+    </value>
   </data>
     <data name="Ping_Pong" xml:space="preserve">
     <value>🏓 Pong! Resposta: {0}ms.</value>

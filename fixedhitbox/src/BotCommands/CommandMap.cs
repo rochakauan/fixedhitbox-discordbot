@@ -1,11 +1,11 @@
 ﻿using DSharpPlus;
 using DSharpPlus.Commands;
 using DSharpPlus.Commands.Processors.SlashCommands;
-using fixedhitbox.Commands.Modules.Aredl;
-using fixedhitbox.Commands.Modules.Diagnostics;
-using fixedhitbox.Commands.Processors;
+using fixedhitbox.BotCommands.Modules.Aredl;
+using fixedhitbox.BotCommands.Modules.Diagnostics;
+using fixedhitbox.BotCommands.Processors;
 
-namespace fixedhitbox.Commands;
+namespace fixedhitbox.BotCommands;
 
 public static class CommandMap
 {

@@ -2,10 +2,10 @@
 using DSharpPlus.Commands;
 using DSharpPlus.Commands.Processors.SlashCommands;
 using DSharpPlus.Commands.Processors.SlashCommands.Localization;
-using fixedhitbox.Commands.Translations;
+using fixedhitbox.BotCommands.Translations;
 using fixedhitbox.Utils;
 
-namespace fixedhitbox.Commands.Modules.Diagnostics;
+namespace fixedhitbox.BotCommands.Modules.Diagnostics;
 
 public sealed class PingCommand
 {
@@ -25,8 +25,8 @@ public sealed class PingCommand
         
         var content = gatewayMs > 0
             ? BotLocalizer.Get("Ping_Response", locale, gatewayMs, responseMs)
-            : BotLocalizer.Get("Ping_Response", locale, responseMs);
-
+            : BotLocalizer.Get("Ping_Pong", locale, responseMs);
+        
         await ctx.EditResponseAsync(content);
     }
 }

@@ -11,8 +11,8 @@ using fixedhitbox.Data;
 namespace fixedhitbox.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260402105902_InitialCreation")]
-    partial class InitialCreation
+    [Migration("20260403101019_v1")]
+    partial class v1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

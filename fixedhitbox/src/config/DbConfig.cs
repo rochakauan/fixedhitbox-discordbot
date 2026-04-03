@@ -6,17 +6,30 @@ public static class DbConfig
 {
     public static string ResolveConnectionString(IConfiguration config)
     {
-        var configuredPath = config["DB__Path"];
+        var connectionString = config.GetConnectionString("DefaultConnection")
+            ?? config["DB__Connection"];
+        
+        if (!string.IsNullOrWhiteSpace(connectionString))
+            return connectionString;
+        
+        var dbPath = config["DB__Path"];
 
-        var dbPath = string.IsNullOrWhiteSpace(configuredPath)
-            ? Path.Combine(Directory.GetCurrentDirectory(),
-            "database", "fhbot.db")
-            : configuredPath;
+        if (string.IsNullOrWhiteSpace(dbPath))
+        {
+            var baseDir = AppContext.BaseDirectory;
 
-        Directory.CreateDirectory(Path.GetDirectoryName(dbPath)!);
-
-        return config.GetConnectionString("DefaultConnection")
-            ?? config["DB__Connection"]
-            ?? $"Data Source={dbPath}";
+            if (baseDir.Contains($"{Path.DirectorySeparatorChar}bin{Path.DirectorySeparatorChar}"))
+                dbPath = Path.GetFullPath(Path.Combine(baseDir,
+                    "..", "..", "..", "database", "fhbot.db"));
+                    //bin/Debug/netX/...
+            else
+                dbPath = Path.Combine(baseDir, "database", "fhbot.db");
+        } 
+        
+        var dir = Path.GetDirectoryName(dbPath);
+        if (!string.IsNullOrEmpty(dir))
+            Directory.CreateDirectory(dir);
+                   
+        return $"Data Source={dbPath}";
     }
 }

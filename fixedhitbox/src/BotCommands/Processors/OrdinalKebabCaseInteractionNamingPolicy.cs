@@ -4,7 +4,7 @@ using DSharpPlus.Commands.Processors.SlashCommands.InteractionNamingPolicies;
 using DSharpPlus.Commands.Trees;
 using Humanizer;
 
-namespace fixedhitbox.Commands.Processors;
+namespace fixedhitbox.BotCommands.Processors;
 
 public class OrdinalKebabCaseInteractionNamingPolicy : IInteractionNamingPolicy
 {

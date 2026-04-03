@@ -1,7 +1,7 @@
 ﻿using DSharpPlus;
-using fixedhitbox.Commands;
+using fixedhitbox.BotCommands;
+using fixedhitbox.BotEvents;
 using fixedhitbox.Data;
-using fixedhitbox.Events;
 using fixedhitbox.Options;
 using fixedhitbox.Services.Apis;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,12 +14,10 @@ namespace fixedhitbox.Services;
 public sealed class DiscordBotService(
     IOptions<DiscordOptions> options,
     ILogger<DiscordBotService> logger,
-    AppDbContext db) : BackgroundService
+    IServiceProvider serviceProvider) : BackgroundService
 {
-
-    private readonly AppDbContext _db = db;
+    
     private readonly DiscordOptions _options = options.Value;
-    private readonly ILogger<DiscordBotService> _logger = logger;
     private DiscordClient? _client;
 
     public override async Task StartAsync(CancellationToken cancellationToken)
@@ -28,31 +26,10 @@ public sealed class DiscordBotService(
             _options.Token,
             DiscordIntents.Guilds);
 
-        builder.ConfigureEventHandlers(events =>
-        {
-            events
-                .HandleSessionCreated((_, _) =>
-                {
-                    _logger.LogInformation("[FixedHitbox] Session created with the gateway.");
-                    return Task.CompletedTask;
-                })
-                .HandleGuildDownloadCompleted((_, _) =>
-                {
-                    _logger.LogInformation("[FixedHitbox] Guild download completed. Bot is ready to operate.");
-                    return Task.CompletedTask;
-                });
-        });
+        ConfigureBotEventHandlers(builder);
 
         builder.ConfigureLogging(logging =>
         {
-            logging.ClearProviders();
-            logging.AddSimpleConsole(options =>
-            {
-                options.TimestampFormat = "[HH:mm:ss] ";
-                options.SingleLine = true;
-            });
-
-            logging.SetMinimumLevel(LogLevel.Warning);
             logging.AddFilter("DSharpPlus", LogLevel.Warning);
         });
 
@@ -70,14 +47,22 @@ public sealed class DiscordBotService(
             //...TODO
         });
 
-        CommandMap.RegisterAllCommands(builder, _options.DebugGuildId);
-        await DiscordEvents.RegisterAll(builder);
+        try
+        {
+            CommandMap.RegisterAllCommands(builder, _options.DebugGuildId);
+            await DiscordEvents.RegisterAll(builder);
+            logger.LogInformation("All commands and events registered.");
+        }
+        catch
+        {
+            logger.LogWarning("All commands and events could not be registered.");
+        }
 
         _client = builder.Build();
 
         await _client.ConnectAsync();
-        _logger.LogInformation(
-            "[FixedHitbox] Connected to Discord! Debug server id: {debugServerId}", _options.DebugGuildId);
+        logger.LogInformation(
+            "Connected to Discord! Debug server id: {debugServerId}", _options.DebugGuildId);
 
         var commands = await _client.GetGlobalApplicationCommandsAsync();
         var ping = commands.FirstOrDefault(x => x.Name == "ping");
@@ -85,10 +70,11 @@ public sealed class DiscordBotService(
         if (ping is not null)
         {
             await _client.DeleteGlobalApplicationCommandAsync(ping.Id);
-            _logger.LogInformation("[FixedHitbox] Ping command deleted.");
+            logger.LogInformation("Ping command deleted.");
         }
 
         await base.StartAsync(cancellationToken);
+        logger.LogInformation("Press Ctrl+C to shut down the bot service.");
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -99,7 +85,7 @@ public sealed class DiscordBotService(
         }
         catch (OperationCanceledException)
         {
-            _logger.LogInformation("[FixedHitbox] Disconnected from Discord!");
+            logger.LogInformation("Disconnected from Discord!");
         }
     }
 
@@ -107,11 +93,36 @@ public sealed class DiscordBotService(
     {
         if (_client is not null)
         {
-            _logger.LogInformation("[FixedHitbox] Disconnecting...");
+            logger.LogInformation("Disconnecting...");
             await _client.DisconnectAsync();
-            _logger.LogInformation("[FixedHitbox] Disconnected. Bot is now offline.");
+            logger.LogInformation("Disconnected. Bot is now offline.");
         }
 
         await base.StopAsync(cancellationToken);
+    }
+
+    private void ConfigureBotEventHandlers(DiscordClientBuilder clientBuilder)
+    {
+        try
+        {
+            clientBuilder.ConfigureEventHandlers(events =>
+            {
+                events
+                    .HandleSessionCreated((_, _) =>
+                    {
+                        logger.LogInformation("Session created with the gateway.");
+                        return Task.CompletedTask;
+                    })
+                    .HandleGuildDownloadCompleted((_, _) =>
+                    {
+                        logger.LogInformation("Guild download completed. Bot is ready to operate.");
+                        return Task.CompletedTask;
+                    });
+            });
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Error while configuring Discord event handlers.");
+        }
     }
 }

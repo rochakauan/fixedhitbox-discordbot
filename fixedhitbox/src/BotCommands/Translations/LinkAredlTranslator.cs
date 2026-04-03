@@ -1,6 +1,6 @@
 using DSharpPlus.Commands.Processors.SlashCommands.Localization;
 
-namespace fixedhitbox.Commands.Translations;
+namespace fixedhitbox.BotCommands.Translations;
 
 public class LinkAredlTranslator : IInteractionLocalizer
 {

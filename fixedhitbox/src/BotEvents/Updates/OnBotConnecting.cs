@@ -1,7 +1,7 @@
 ﻿using DSharpPlus;
 using DSharpPlus.Entities;
 
-namespace fixedhitbox.Events.Updates;
+namespace fixedhitbox.BotEvents.Updates;
 
 public abstract class OnBotConnecting
 {
