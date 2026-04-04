@@ -38,9 +38,11 @@ public class LinkedUserMap : IEntityTypeConfiguration<LinkedUser>
 
         builder.Property(x => x.Country)
             .HasColumnName("country");
-        builder.Property(x => x.BanLevel)
-            .HasColumnName("ban_level");
-
+        
+        builder.Property(x => x.CreatedInAredlAt)
+            .HasColumnName("created_in_aredl_at_utc")
+            .HasDefaultValueSql("CURRENT_TIMESTAMP");
+        
         builder.Property(x => x.LinkedAtUtc)
             .IsRequired()
             .HasColumnName("linked_at_utc")

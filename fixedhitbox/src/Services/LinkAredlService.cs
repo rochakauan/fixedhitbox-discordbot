@@ -1,7 +1,7 @@
 using fixedhitbox.Data;
+using fixedhitbox.Dtos;
 using fixedhitbox.Dtos.Aredl;
 using fixedhitbox.Enums;
-using fixedhitbox.Extensions;
 using fixedhitbox.Models;
 using fixedhitbox.Services.Interfaces;
 using fixedhitbox.Services.Results;
@@ -72,7 +72,7 @@ public sealed class LinkAredlService(
 
         if (existingUser is not null)
         {
-            var dto = existingUser.ToPendingDto();
+            var dto = PendingAredlLinkDto.CreateFromEntity(existingUser);
             cache.Set(LinkedUserKey(discordId), dto, LinkedCacheOptions);
             
             return ResultData<PendingAredlLinkDto>.AlreadyLinked(dto);
@@ -118,7 +118,9 @@ public sealed class LinkAredlService(
             cache.Set(ProfileKey(discordId), profile, ProfileCacheOptions);
         }
         
-        var pending = profile.ToPendingDto(discordId);
+        if (!AredlProfileMapper.TryNormalize(profile, out var pending, out var error))
+            return ResultData<PendingAredlLinkDto>.ValidationError(error);
+        
         cache.Remove(NotFoundKey(discordId));
         cache.Set(PendingLinkKey(discordId), pending, PendingCacheOptions);
         
@@ -140,21 +142,14 @@ public sealed class LinkAredlService(
 
         if (existingUser is not null)
         {
-            var dto = existingUser.ToPendingDto();
-
+            var dto = PendingAredlLinkDto.CreateFromEntity(existingUser);
             cache.Remove(PendingLinkKey(discordId));
             cache.Set(LinkedUserKey(discordId), dto, LinkedCacheOptions);
             
             return ResultData<PendingAredlLinkDto>.AlreadyLinked(dto);
         }
 
-        var entity = new LinkedUser(
-            pendingLink.DiscordId,
-            pendingLink.Username,
-            pendingLink.GlobalName,
-            pendingLink.Description,
-            pendingLink.AredlUserId,
-            pendingLink.Country);
+        var entity = LinkedUser.CreateFromPending(pendingLink);
 
         try
         {
@@ -196,7 +191,7 @@ public sealed class LinkAredlService(
 
         if (user is not null)
         {
-            var dto = user.ToPendingDto();
+            var dto = PendingAredlLinkDto.CreateFromEntity(user);
             cache.Set(LinkedUserKey(discordId), dto, LinkedCacheOptions);
             return ResultData<PendingAredlLinkDto>.AlreadyLinked();
         }

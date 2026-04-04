@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using fixedhitbox.Dtos.Aredl;
 
 namespace fixedhitbox.Models;
 
@@ -8,29 +9,28 @@ public sealed class LinkedUser
     public int Id { get; init; }
     public ulong DiscordId { get; init; }
 
-    public string Username { get; set; } = string.Empty;
-    public string? GlobalName { get; set; } = string.Empty;
-    public string? Description { get; set; }
+    public string Username { get; init; } = string.Empty;
+    public string GlobalName { get; init; } = string.Empty;
+    public string? Description { get; init; } = string.Empty;
 
     public Guid AredlUserId { get; init; }
-    public int? Country { get; set; }
-    public byte BanLevel { get; set; }
-
+    public int? Country { get; init; }
+    public DateTime CreatedInAredlAt { get; init; }
+    
     public DateTime LinkedAtUtc { get; private set; }
-    public DateTime LastUpdateAtUtc { get; set; }
+    public DateTime LastUpdateAtUtc { get; private set; }
 
     private LinkedUser() { }
 
-    public LinkedUser(
-        ulong discordId, string username,
-        string? globalName, string? description,
-        Guid aredlUserId, int? country)
-    {
-        DiscordId = discordId;
-        Username = username;
-        GlobalName = globalName;
-        Description = description;
-        AredlUserId = aredlUserId;
-        Country = country;
-    }
+    public static LinkedUser CreateFromPending(PendingAredlLinkDto dto)
+        => new()
+        {
+            DiscordId = dto.DiscordId,
+            Username = dto.Username,
+            GlobalName = dto.GlobalName,
+            Description = dto.Description,
+            AredlUserId = dto.AredlUserId,
+            Country = dto.Country,
+            CreatedInAredlAt = dto.CreatedInAredlAt
+        };
 }

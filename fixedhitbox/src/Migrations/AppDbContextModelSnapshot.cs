@@ -27,13 +27,15 @@ namespace fixedhitbox.Migrations
                         .HasColumnType("TEXT")
                         .HasColumnName("aredl_user_id");
 
-                    b.Property<byte>("BanLevel")
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("ban_level");
-
                     b.Property<int?>("Country")
                         .HasColumnType("INTEGER")
                         .HasColumnName("country");
+
+                    b.Property<DateTime>("CreatedInAredlAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT")
+                        .HasColumnName("created_in_aredl_at_utc")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.Property<string>("Description")
                         .HasMaxLength(300)
@@ -45,6 +47,7 @@ namespace fixedhitbox.Migrations
                         .HasColumnName("discord_id");
 
                     b.Property<string>("GlobalName")
+                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("TEXT")
                         .HasColumnName("global_name");

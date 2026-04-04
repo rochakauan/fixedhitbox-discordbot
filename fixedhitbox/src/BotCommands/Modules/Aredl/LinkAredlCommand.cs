@@ -89,7 +89,7 @@ public sealed class LinkAredlCommand(IServiceProvider sp)
                     .WithColor(DiscordColor.Yellow)
                     .AddField(BotLocalizer.Get(
                         "Aredl_ProfileFound_Field_Player", locale),
-                        response.GlobalName ?? response.Username,
+                        response.GlobalName,
                         inline: true)
                     .AddField(BotLocalizer.Get(
                         "Aredl_ProfileFound_Field_Country", locale),
@@ -99,6 +99,7 @@ public sealed class LinkAredlCommand(IServiceProvider sp)
                         "Aredl_ProfileFound_Field_Records", locale),
                         "Not implemented yet",
                         inline: true)
+                    .WithThumbnail(ctx.User.AvatarUrl)
                     .WithFooter(BotLocalizer.Get("Aredl_Embeds_Footer", locale),
                         ctx.Client.CurrentUser.AvatarUrl)
                     .WithTimestamp(DateTime.UtcNow.ToLocalTime());

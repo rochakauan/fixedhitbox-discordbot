@@ -1,20 +1,23 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace fixedhitbox.Dtos.Aredl;
 
 public sealed record AredlProfileResponse
 {
     
-    public required Guid Id { get; init; }
-    public required string Username { get; set; }
+    public Guid Id { get; init; }
+    public string? Username { get; init; }
+    public string? GlobalName { get; init; }
     
-    [JsonProperty("global_name")]
-    public string GlobalName { get; set; } = string.Empty;
-    public ulong DiscordId { get; init; }
-    public string Description { get; set; } = string.Empty;
-    public int? Country { get; set; } = null;
+    [JsonNumberHandling(JsonNumberHandling.AllowReadingFromString)]
+    public ulong? DiscordId { get; init; }
     
-    public byte BanLevel { get; set; } = 0;
-    public DateTime CreatedAt { get; set; }
+    public string? Description { get; init; }
+    
+    [JsonNumberHandling(JsonNumberHandling.AllowReadingFromString)]
+    public int? Country { get; init; }
+    
+    [JsonPropertyName("created_at")]
+    public DateTime? CreatedInAredlAt { get; init; }
 
 }

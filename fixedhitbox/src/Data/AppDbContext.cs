@@ -43,7 +43,14 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
         var utcNow = DateTime.UtcNow;
 
         foreach (var entry in ChangeTracker.Entries<LinkedUser>())
-            if (entry.State is EntityState.Added or EntityState.Modified)
-                entry.Property(x => x.LastUpdateAtUtc).CurrentValue = utcNow;
+        {
+            if (entry.State is EntityState.Added)
+            {
+                entry.Property(entity => entity.LinkedAtUtc).CurrentValue = utcNow;
+                entry.Property(entity => entity.LastUpdateAtUtc).CurrentValue = utcNow;
+            }
+            else if (entry.State is EntityState.Modified) 
+                entry.Property(entity => entity.LastUpdateAtUtc).CurrentValue = utcNow;
+        }
     }
 }

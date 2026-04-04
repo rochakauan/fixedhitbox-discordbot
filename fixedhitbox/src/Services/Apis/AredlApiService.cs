@@ -1,12 +1,20 @@
+using System.Net.Http.Json;
 using fixedhitbox.Dtos.Aredl;
 using fixedhitbox.Services.Interfaces;
 using fixedhitbox.Services.Results;
-using Newtonsoft.Json;
+using System.Text.Json;
+using fixedhitbox.Dtos;
 
 namespace fixedhitbox.Services.Apis;
 
 public sealed class AredlApiService(HttpClient httpClient) : IAredlApiService
 {
+
+    private static readonly JsonSerializerOptions JsonOptions = new()
+    {
+        PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower,
+        PropertyNameCaseInsensitive = true
+    };
 
     public async Task<AredlApiResult<AredlProfileResponse>> GetProfileAsync(
         ulong discordId,
@@ -24,13 +32,16 @@ public sealed class AredlApiService(HttpClient httpClient) : IAredlApiService
             if (!response.IsSuccessStatusCode)
                 return AredlApiResult<AredlProfileResponse>.ConnectionError(
                     $"Fail while attempting to connect to AREDL: {response.StatusCode}.");
-
-            var json = await response.Content.ReadAsStringAsync(cancellationToken);
-            var profile = JsonConvert.DeserializeObject<AredlProfileResponse>(json);
-
+            
+            var profile = await response.Content.ReadFromJsonAsync<AredlProfileResponse>(
+                JsonOptions, cancellationToken);
+            
             if (profile is null)
                 return AredlApiResult<AredlProfileResponse>.InvalidResponse(
-                    "AREDL Api sent and invalid or empty response.");
+                    "AREDL Api sent an invalid or empty response.");
+            
+            if (!AredlProfileMapper.TryNormalize(profile, out _, out var error))
+                return AredlApiResult<AredlProfileResponse>.InvalidResponse(error);
 
             if (string.IsNullOrWhiteSpace(profile.Username))
                 return AredlApiResult<AredlProfileResponse>.NotFound(
