@@ -8,7 +8,7 @@ public sealed class LinkedUser
     public int Id { get; init; }
     public ulong DiscordId { get; init; }
 
-    public required string Username { get; set; }
+    public string Username { get; set; } = string.Empty;
     public string? GlobalName { get; set; } = string.Empty;
     public string? Description { get; set; }
 

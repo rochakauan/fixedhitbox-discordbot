@@ -13,6 +13,7 @@
       <PackageReference Include="DSharpPlus.Commands" Version="5.0.0-nightly-02578" />
       <PackageReference Include="DSharpPlus.Interactivity" Version="5.0.0-nightly-02578" />
       <PackageReference Include="Humanizer.Core" Version="3.0.10" />
+      <PackageReference Include="ISO3166" Version="1.0.4" />
       <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.5" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.5">
         <PrivateAssets>all</PrivateAssets>
@@ -51,4 +52,13 @@
       <Folder Include="BotCommands\Modules\" />
     </ItemGroup>
 
+    <ItemGroup>
+        <None Update="appsettings.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="botsettings.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+    
 </Project>

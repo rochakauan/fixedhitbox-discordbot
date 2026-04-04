@@ -1,9 +1,8 @@
 ﻿using DSharpPlus;
 using fixedhitbox.BotCommands;
 using fixedhitbox.BotEvents;
-using fixedhitbox.Data;
 using fixedhitbox.Options;
-using fixedhitbox.Services.Apis;
+using fixedhitbox.Services.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -35,16 +34,8 @@ public sealed class DiscordBotService(
 
         builder.ConfigureServices(services =>
         {
-            services.AddHttpClient();
-            services.AddHttpClient<AredlApiService>(client =>
-            {
-                client.BaseAddress = new Uri("https://api.aredl.net/");
-                client.Timeout = TimeSpan.FromSeconds(5);
-            });
-
-            //EF SQLite db
-            //LinkAredlUserService
-            //...TODO
+            services.AddSingleton(serviceProvider.GetRequiredService<ILinkAredlService>());
+            services.AddSingleton(serviceProvider.GetRequiredService<IAredlApiService>());
         });
 
         try

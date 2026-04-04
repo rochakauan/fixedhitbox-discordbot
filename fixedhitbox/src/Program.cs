@@ -3,6 +3,8 @@ using fixedhitbox.config;
 using fixedhitbox.Data;
 using fixedhitbox.Options;
 using fixedhitbox.Services;
+using fixedhitbox.Services.Apis;
+using fixedhitbox.Services.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -28,11 +30,22 @@ internal static class Program
                 .AddJsonFile("botsettings.json", true, true)
                 .AddEnvironmentVariables();
             
-            builder.Services.AddDbContext<AppDbContext>(options =>
-                {
-                    options.UseSqlite(DbConfig.ResolveConnectionString(builder.Configuration));
-                });
-
+            builder.Services.AddDbContextFactory<AppDbContext>(options =>
+                    options.UseSqlite(DbConfig.ResolveConnectionString(builder.Configuration))
+                );
+            
+            builder.Services.AddMemoryCache();
+            builder.Services.AddHttpClient<AredlApiService>(client =>
+            {
+                client.BaseAddress = new Uri("https://api.aredl.com/");
+                client.Timeout = TimeSpan.FromSeconds(5);
+            });
+            
+            builder.Services.AddSingleton<IAredlApiService, AredlApiService>();
+            builder.Services.AddSingleton<ILinkAredlService, LinkAredlService>();
+            
+            builder.Services.AddHostedService<DiscordBotService>();
+                
             builder.Services
                 .AddOptions<DiscordOptions>()
                 .Bind(builder.Configuration.GetSection("Discord"))
@@ -46,14 +59,15 @@ internal static class Program
 
                 .ValidateOnStart();
 
-            builder.Services.AddHostedService<DiscordBotService>();
-
             builder.Logging.ClearProviders();
-            builder.Logging.SetMinimumLevel(LogLevel.Warning);
+            builder.Logging.SetMinimumLevel(LogLevel.Information);
             builder.Logging.AddConfiguration(builder.Configuration.GetSection("Logging"));
             builder.Logging.AddSimpleConsole();
             
             builder.Logging.AddFilter("fixedhitbox", LogLevel.Information);
+            builder.Logging.AddFilter("System", LogLevel.Warning);
+            builder.Logging.AddFilter("Microsoft.Host", LogLevel.Warning); 
+            //TODO: Let the app settings decide which filters to apply.
 
             using var host = builder.Build();
             await host.RunAsync();

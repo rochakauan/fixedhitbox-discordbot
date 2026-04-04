@@ -15,7 +15,7 @@ public sealed class AredlApiService(HttpClient httpClient) : IAredlApiService
         try
         {
             using var response = await httpClient.GetAsync(
-                $"v2/api/aredl/profile/{discordId}",
+                $"https://api.aredl.net/v2/api/aredl/profile/{discordId}",
                 cancellationToken);
 
             if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
