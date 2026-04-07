@@ -34,7 +34,7 @@
     
     <!-- VINCULAR COM DEMONLIST -->
     <data name="Aredl_ConnectingApi" xml:space="preserve">
-        <value>🚀 | Conectando à API da AREDL...</value>
+        <value>🚀 | Iniciando conexão com a AREDL...</value>
     </data>
 
     <data name="Aredl_ConnectionError" xml:space="preserve">
@@ -81,7 +81,12 @@ A AREDL deve corrigir isso logo, logo.
         <value>🔗 | Confirmação de Vínculo</value>
     </data>
     <data name="Aredl_ProfileFound_Description" xml:space="preserve">
-        <value>Olá, {0}. Nós encontramos o seu perfil!</value>
+        <value>
+            Olá, {0}. Encontrei você! 
+
+🔍 As informações batem com o seu perfil? 
+🪪 Confirme se o link da conta abaixo é a sua.
+        </value>
     </data>
     <data name="Aredl_ProfileFound_Field_Player" xml:space="preserve">
         <value>Jogador</value>
@@ -99,12 +104,21 @@ A AREDL deve corrigir isso logo, logo.
         <value>Não. Cancelar</value>
     </data>
 
-    <data name="Aredl_UnexpectedError" xml:space="preserve">
-        <value>😓🎈 | Ocorreu um erro inesperado. Pedimos desculpas.
+    <data name="Aredl_UnexpectedError_Title" xml:space="preserve">
+        <value>😓🎈 | Ocorreu um erro inesperado. </value>
+    </data>
+    <data name="Aredl_UnexpectedError_Description" xml:space="preserve">
+        <value>
+            Pedimos desculpas.
 Por favor, aguarde antes de tentar novamente.
         </value>
     </data>
-
+    <data name="Aredl_UnexpectedError_Message" xml:space="preserve">
+        <value>
+            Falha interna no sistema.
+        </value>
+    </data>
+    
     <data name="Aredl_Interaction_ConfirmLink_Success" xml:space="preserve">
         <value>
             ✅ | **Vínculo confirmado!** Agora sua conta AREDL está conectada ao seu Discord.

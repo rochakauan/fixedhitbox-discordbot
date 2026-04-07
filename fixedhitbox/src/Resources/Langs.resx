@@ -34,7 +34,7 @@
     
     <!-- LINK WITH DEMONLIST -->
     <data name="Aredl_ConnectingApi" xml:space="preserve">
-        <value>🚀 | Connecting to AREDL API...</value>
+        <value>🚀 | Starting connection with AREDL...</value>
     </data>
     
     <data name="Aredl_ConnectionError" xml:space="preserve">
@@ -81,7 +81,12 @@ AREDL should fix this soon.
         <value>🔗 | Link Confirmation</value>
     </data>
     <data name="Aredl_ProfileFound_Description" xml:space="preserve">
-        <value>Hello {0}. We found your profile!</value>
+        <value>
+            Hello {0}. I found your profile!
+
+🔍 Does the information match your profile?
+🪪 Confirm if the account link below is yours.
+        </value>
     </data>
     <data name="Aredl_ProfileFound_Field_Player" xml:space="preserve">
         <value>Player</value>
@@ -99,9 +104,19 @@ AREDL should fix this soon.
         <value>No. Cancel</value>
     </data>
     
-    <data name="Aredl_UnexpectedError" xml:space="preserve">
-        <value>😓🎈 | An unexpected error occurred. We apologize.
+    <data name="Aredl_UnexpectedError_Title" xml:space="preserve">
+        <value>😓🎈 | An unexpected error occurred.</value>
+    </data>
+    <data name="Aredl_UnexpectedError_Description" xml:space="preserve">
+          <value>
+              We apologize.
 Please wait before trying again.
+          </value>
+    </data>
+
+    <data name="Aredl_UnexpectedError_Message" xml:space="preserve">
+        <value>
+            Internal failure in the system.
         </value>
     </data>
     

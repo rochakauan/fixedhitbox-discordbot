@@ -1,15 +1,14 @@
 ﻿using DotNetEnv;
-using fixedhitbox.config;
-using fixedhitbox.Data;
-using fixedhitbox.Options;
-using fixedhitbox.Services;
-using fixedhitbox.Services.Apis;
-using fixedhitbox.Services.Interfaces;
+using fixedhitbox.Application;
+using fixedhitbox.Application.Interfaces.Aredl;
+using fixedhitbox.Application.UseCases.LinkAredl;
+using fixedhitbox.DiscordBot.Options;
+using fixedhitbox.HostedService;
+using fixedhitbox.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace fixedhitbox;
@@ -30,22 +29,10 @@ internal static class Program
                 .AddJsonFile("botsettings.json", true, true)
                 .AddEnvironmentVariables();
             
-            builder.Services.AddDbContextFactory<AppDbContext>(options =>
-                    options.UseSqlite(DbConfig.ResolveConnectionString(builder.Configuration))
-                );
-            
-            builder.Services.AddMemoryCache();
-            builder.Services.AddHttpClient<AredlApiService>(client =>
-            {
-                client.BaseAddress = new Uri("https://api.aredl.com/");
-                client.Timeout = TimeSpan.FromSeconds(5);
-            });
-            
-            builder.Services.AddSingleton<IAredlApiService, AredlApiService>();
-            builder.Services.AddSingleton<ILinkAredlService, LinkAredlService>();
-            
+            builder.Services.AddInfrastructure(builder.Configuration);
+            builder.Services.AddApplication();
             builder.Services.AddHostedService<DiscordBotService>();
-                
+            
             builder.Services
                 .AddOptions<DiscordOptions>()
                 .Bind(builder.Configuration.GetSection("Discord"))
@@ -70,6 +57,9 @@ internal static class Program
             //TODO: Let the app settings decide which filters to apply.
 
             using var host = builder.Build();
+            
+            BotServices.Provider = host.Services;
+            
             await host.RunAsync();
 
             return 0;
