@@ -10,10 +10,9 @@ namespace fixedhitbox.HostedService;
 
 public sealed class DiscordBotService(
     IOptions<DiscordOptions> options,
-    ILogger<DiscordBotService> logger,
-    IServiceProvider serviceProvider) : BackgroundService
+    ILogger<DiscordBotService> logger) : BackgroundService
 {
-    
+
     private readonly DiscordOptions _options = options.Value;
     private DiscordClient? _client;
 
@@ -34,7 +33,7 @@ public sealed class DiscordBotService(
         {
             CommandMap.RegisterAllCommands(builder, _options.DebugGuildId);
             await DiscordEvents.RegisterAll(builder);
-            
+
             logger.LogInformation("All commands and events registered.");
         }
         catch (Exception ex)
@@ -45,12 +44,12 @@ public sealed class DiscordBotService(
         _client = builder.Build();
 
         await _client.ConnectAsync();
-        
+
         logger.LogInformation(
             "Connected to Discord! Debug server id: {debugServerId}", _options.DebugGuildId);
 
         await base.StartAsync(cancellationToken);
-        
+
         logger.LogInformation("Press Ctrl+C to shut down the bot service.");
     }
 
@@ -79,12 +78,12 @@ public sealed class DiscordBotService(
     }
 
     private void ConfigureBotEventHandlers(DiscordClientBuilder clientBuilder)
-    { 
+    {
         clientBuilder.ConfigureEventHandlers(events =>
-            { 
+            {
                 events
                     .HandleSessionCreated((_, _) =>
-                    { 
+                    {
                         logger.LogInformation("Session created with the gateway.");
                         return Task.CompletedTask;
                     })

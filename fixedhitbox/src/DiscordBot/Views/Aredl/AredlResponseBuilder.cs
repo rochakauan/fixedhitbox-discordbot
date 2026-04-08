@@ -18,7 +18,7 @@ public static class AredlResponseBuilder
     public static DiscordWebhookBuilder NotFound(CommandContext ctx)
     {
         var locale = ctx.As<SlashCommandContext>().Interaction.Locale;
-        
+
         var errorEmbed = new DiscordEmbedBuilder()
             .WithTitle(BotLocalizer.Get("Aredl_NotFound_Title", locale))
             .WithDescription(BotLocalizer.Get("Aredl_NotFound_Description", locale))
@@ -29,7 +29,7 @@ public static class AredlResponseBuilder
                 inline: true)
             .WithFooter(BotLocalizer.Get("Aredl_Embeds_Footer", locale), ctx.Client.CurrentUser.AvatarUrl)
             .WithTimestamp(DateTime.UtcNow.ToLocalTime());
-        
+
         return new DiscordWebhookBuilder().AddEmbed(errorEmbed);
     }
 
@@ -39,7 +39,7 @@ public static class AredlResponseBuilder
         bool shortSentence = false)
     {
         var locale = ctx.As<SlashCommandContext>().Interaction.Locale;
-        
+
         var alreadyEmbed = new DiscordEmbedBuilder()
             .WithTitle(BotLocalizer.Get("Aredl_AlreadyLinked_Title", locale))
             .WithDescription(BotLocalizer.Get("Aredl_AlreadyLinked_Description", locale))
@@ -54,17 +54,17 @@ public static class AredlResponseBuilder
             ? new DiscordWebhookBuilder().AddEmbed(alreadyEmbed)
             : new DiscordWebhookBuilder()
                 .WithContent(BotLocalizer.Get("Aredl_AlreadyLinked_ShortMessage", locale));
-        
+
         return webhook;
     }
 
     public static DiscordWebhookBuilder Pending(
-        PendingAredlLinkDto dto, 
-        CommandContext ctx, 
+        PendingAredlLinkDto dto,
+        CommandContext ctx,
         bool shortSentence = false)
     {
         var locale = ctx.As<SlashCommandContext>().Interaction.Locale;
-       
+
         var userMention = ctx.User.Mention;
         var embed = new DiscordEmbedBuilder()
             .WithTitle(BotLocalizer.Get("Aredl_ProfileFound_Title", locale))
@@ -80,7 +80,7 @@ public static class AredlResponseBuilder
                 inline: true)
             .AddField(BotLocalizer.Get(
                     "Aredl_ProfileFound_Field_Records", locale),
-                "Not implemented yet",
+                $"{dto.Records.Count} Extreme Demon(s).",
                 inline: true)
             .WithThumbnail(ctx.User.AvatarUrl)
             .WithFooter(BotLocalizer.Get("Aredl_Embeds_Footer", locale),
@@ -88,21 +88,21 @@ public static class AredlResponseBuilder
             .WithTimestamp(DateTime.UtcNow.ToLocalTime());
 
         var buttons = PendingButtons(locale);
-        
+
         var webhook = !shortSentence
             ? new DiscordWebhookBuilder().AddEmbed(embed)
                 .AddActionRowComponent(buttons[0], buttons[1])
             : new DiscordWebhookBuilder()
                 .WithContent(BotLocalizer.Get("Aredl_PendingConfirmation_When_NullApiResponse",
                     locale));
-        
+
         return webhook;
     }
 
     public static DiscordWebhookBuilder ConnectionError(CommandContext ctx)
     {
         var locale = ctx.As<SlashCommandContext>().Interaction.Locale;
-        
+
         return new DiscordWebhookBuilder()
             .WithContent(BotLocalizer.Get("Aredl_ConnectingApi", locale));
     }
@@ -136,7 +136,7 @@ public static class AredlResponseBuilder
             false,
             new DiscordComponentEmoji("✖️"))
         ];
-        
+
         return buttons;
     }
 }

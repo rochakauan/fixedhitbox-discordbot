@@ -7,5 +7,6 @@ public sealed record AredlProfileDto(
     ulong DiscordId,
     string? Description,
     int? Country,
-    DateTime CreatedInAredlAt
+    DateTime CreatedInAredlAt,
+    IReadOnlyList<AredlRecordDto> Records
 );

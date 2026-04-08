@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using DSharpPlus.Commands;
 using DSharpPlus.Commands.Processors.SlashCommands;
 using DSharpPlus.Commands.Processors.SlashCommands.Localization;
@@ -12,26 +13,26 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace fixedhitbox.DiscordBot.Commands.Modules.Aredl;
 
-public sealed class LinkAredlCommand(IServiceProvider provider)
+public sealed class LinkAredlCommand()
 {
-    
+
     [Command("link-with-demonlist"), InteractionLocalizer<LinkAredlTranslator>]
-    [System.ComponentModel.Description("Link your Discord account to your AREDL and POINTERCRATE profile.")]
+    [Description("Link your Discord account to your AREDL and POINTERCRATE profile.")]
     public async ValueTask ExecuteAsync(CommandContext ctx)
     {
         var locale = ctx.As<SlashCommandContext>().Interaction.Locale;
-        
+
         using var scope = BotServices.Provider.CreateScope();
-        var exists = scope.ServiceProvider.GetService<IStartLinkAredl>();
-        if (exists is null)
-            throw new NullReferenceException("IStartLinkAredl not registered");
-        
+        var exists = scope.ServiceProvider
+        .GetService<IStartLinkAredl>() ?? throw new
+        NullReferenceException("IStartLinkAredl not registered");
+
         var useCase = scope.ServiceProvider
             .GetRequiredService<IStartLinkAredl>();
 
         await ctx.RespondAsync(AredlResponseBuilder.ConnectingToApi(ctx)
             .AsEphemeral());
-        
+
         var result = await useCase.StartLinkAsync(ctx.User.Id);
 
         if (RequiresData(result.Status) && result.Data is null)
@@ -45,26 +46,25 @@ public sealed class LinkAredlCommand(IServiceProvider provider)
             case EResultStatus.ConnectionError:
                 await ctx.EditResponseAsync(AredlResponseBuilder.ConnectionError(ctx));
                 break;
-            
+
             case EResultStatus.NotFound:
                 await ctx.EditResponseAsync(AredlResponseBuilder.NotFound(ctx));
                 break;
-            
+
             case EResultStatus.AlreadyLinked:
                 await ctx.EditResponseAsync(AredlResponseBuilder.AlreadyLinked(
                     result.Data!.Username, ctx));
                 break;
-            
+
             case EResultStatus.Success:
             case EResultStatus.PendingConfirmation:
                 await ctx.EditResponseAsync(AredlResponseBuilder.Pending(result.Data!, ctx));
                 break;
 
-                /*
             case EResultStatus.UnexpectedError:
                 await ctx.EditResponseAsync(AredlResponseBuilder.UnexpectedError(ctx));
-                break;*/
-            
+                break;
+
             default:
                 await SafeRespondAsync(ctx, locale!);
                 break;

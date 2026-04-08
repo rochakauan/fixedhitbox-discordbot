@@ -26,7 +26,7 @@ internal static class Program
                 .AddJsonFile("appsettings.json", false, true)
                 .AddJsonFile("botsettings.json", true, true)
                 .AddEnvironmentVariables();
-            
+
             builder.Services.AddInfrastructure(builder.Configuration);
             builder.Services.AddApplication();
             builder.Services.AddHostedService<DiscordBotService>();
@@ -36,16 +36,16 @@ internal static class Program
             builder.Logging.SetMinimumLevel(LogLevel.Information);
             builder.Logging.AddConfiguration(builder.Configuration.GetSection("Logging"));
             builder.Logging.AddSimpleConsole();
-            
+
             builder.Logging.AddFilter("fixedhitbox", LogLevel.Information);
             builder.Logging.AddFilter("System", LogLevel.Warning);
-            builder.Logging.AddFilter("Microsoft.Host", LogLevel.Warning); 
+            builder.Logging.AddFilter("Microsoft.Host", LogLevel.Warning);
             //TODO: Let the app settings decide which filters to apply.
 
             using var host = builder.Build();
-            
+
             BotServices.Provider = host.Services;
-            
+
             await host.RunAsync();
 
             return 0;

@@ -9,4 +9,6 @@ public sealed record PendingAredlLinkDto
     public Guid Id { get; init; }
     public int? Country { get; init; }
     public DateTime CreatedAt { get; init; }
+
+    public IReadOnlyList<AredlRecordDto> Records { get; init; } = [];
 }
