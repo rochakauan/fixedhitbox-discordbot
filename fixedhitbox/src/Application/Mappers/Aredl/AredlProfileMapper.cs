@@ -21,20 +21,25 @@ public static class AredlProfileMapper
             return MapperResult<PendingAredlLinkDto>.Fail("DiscordId is missing.");
         if (response.CreatedInAredlAt is null)
             return MapperResult<PendingAredlLinkDto>.Fail("CreatedInAredlAt is missing.");
-
+        
         var records = new List<AredlRecordDto>();
+        var recordsAvailable = true;
+        
         if (response.Records is not null)
         {
             foreach (var record in response.Records)
             {
                 var result = AredlRecordMapper.Map(record);
+                
                 if (!result.Success)
-                    return MapperResult<PendingAredlLinkDto>
-                        .Fail("AredlRecordMapper could not map an AredlRecordResponse.");
+                {
+                    recordsAvailable = false;
+                    continue;
+                }
 
                 records.Add(result.Value!);
             }
-        }
+        } else recordsAvailable = false;
 
         var dto = new PendingAredlLinkDto
         {
@@ -45,7 +50,8 @@ public static class AredlProfileMapper
             Id = response.Id,
             Country = response.Country,
             CreatedAt = response.CreatedInAredlAt.Value,
-            Records = records
+            Records = records,
+            RecordsAvailable = recordsAvailable
         };
 
         return MapperResult<PendingAredlLinkDto>.Ok(dto);
@@ -64,6 +70,9 @@ public static class AredlProfileMapper
             CreatedAt = validDto.CreatedInAredlAt,
             Records = validDto.Records
         };
+        
+        if (validDto.Records is not null)
+            pendingDto.RecordsAvailable = true;
 
         return MapperResult<PendingAredlLinkDto>.Ok(pendingDto);
     }

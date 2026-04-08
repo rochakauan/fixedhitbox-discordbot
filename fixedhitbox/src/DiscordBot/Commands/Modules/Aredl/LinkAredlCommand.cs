@@ -16,12 +16,12 @@ namespace fixedhitbox.DiscordBot.Commands.Modules.Aredl;
 public sealed class LinkAredlCommand()
 {
 
-    [Command("link-with-demonlist"), InteractionLocalizer<LinkAredlTranslator>]
-    [Description("Link your Discord account to your AREDL and POINTERCRATE profile.")]
+    [Command("link-aredl"), InteractionLocalizer<LinkAredlTranslator>]
+    [Description("Link your Discord account to your AREDL profile.")]
     public async ValueTask ExecuteAsync(CommandContext ctx)
     {
         var locale = ctx.As<SlashCommandContext>().Interaction.Locale;
-
+        
         using var scope = BotServices.Provider.CreateScope();
         var exists = scope.ServiceProvider
         .GetService<IStartLinkAredl>() ?? throw new

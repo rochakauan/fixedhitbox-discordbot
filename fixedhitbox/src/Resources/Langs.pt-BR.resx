@@ -94,8 +94,8 @@ A AREDL deve corrigir isso logo, logo.
     <data name="Aredl_ProfileFound_Field_Country" xml:space="preserve">
         <value>País</value>
     </data>
-    <data name="Aredl_ProfileFound_Field_Records" xml:space="preserve">
-        <value>Recordes</value>
+    <data name="Aredl_ProfileFound_Field_Hardest" xml:space="preserve">
+        <value>Demon mais difícil</value>
     </data>
     <data name="Aredl_ProfileFound_Interaction_ConfirmLink" xml:space="preserve">
         <value>Sim, sou eu!</value>

@@ -15,9 +15,6 @@ public static class AredlRecordMapper
         if (record.Mobile is null)
             return MapperResult<AredlRecordDto>.Fail("Record.Mobile is missing");
 
-        if (string.IsNullOrWhiteSpace(record.VideoUrl))
-            return MapperResult<AredlRecordDto>.Fail("Record.VideoUrl is missing.");
-
         if (record.IsVerification is null)
             return MapperResult<AredlRecordDto>.Fail("Record.IsVerification is missing.");
 

@@ -33,7 +33,7 @@ public static class OptionsExtensions
             options.Validate(o => o.Token.Length <= 180,
                 "The Discord token is too long. Ensure you have provided a valid token.");
 
-            options.Validate(o => o.DebugGuildId is >= 1 or <= 100,
+            options.Validate(o => o.DebugGuildId >= 1,
                 "Discord debug guild id must be between 1 and 100 characters.");
         });
 

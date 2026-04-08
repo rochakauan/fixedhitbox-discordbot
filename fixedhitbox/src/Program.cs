@@ -45,7 +45,7 @@ internal static class Program
             using var host = builder.Build();
 
             BotServices.Provider = host.Services;
-
+            
             await host.RunAsync();
 
             return 0;

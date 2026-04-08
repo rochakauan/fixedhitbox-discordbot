@@ -8,5 +8,5 @@ public sealed record AredlProfileDto(
     string? Description,
     int? Country,
     DateTime CreatedInAredlAt,
-    IReadOnlyList<AredlRecordDto> Records
+    IReadOnlyList<AredlRecordDto>? Records
 );

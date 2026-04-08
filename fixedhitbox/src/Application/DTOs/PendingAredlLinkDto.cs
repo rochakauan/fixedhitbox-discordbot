@@ -10,5 +10,6 @@ public sealed record PendingAredlLinkDto
     public int? Country { get; init; }
     public DateTime CreatedAt { get; init; }
 
-    public IReadOnlyList<AredlRecordDto> Records { get; init; } = [];
+    public IReadOnlyList<AredlRecordDto>? Records { get; set; } = [];
+    public bool RecordsAvailable { get; set; }
 }

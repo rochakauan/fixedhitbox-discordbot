@@ -8,17 +8,17 @@ public abstract class LinkAredlTranslator : IInteractionLocalizer
     public ValueTask<IReadOnlyDictionary<DiscordLocale, string>> TranslateAsync(string fullSymbolName)
         => fullSymbolName switch
         {
-            "link-with-demonlist.name" => ValueTask.FromResult<IReadOnlyDictionary<DiscordLocale, string>>(
+            "link-aredl.name" => ValueTask.FromResult<IReadOnlyDictionary<DiscordLocale, string>>(
                 new Dictionary<DiscordLocale, string>
                 {
-                    { DiscordLocale.en_US, "link-with-demonlist" },
-                    { DiscordLocale.pt_BR, "vincular-a-demonlist" }
+                    { DiscordLocale.en_US, "link-aredl" },
+                    { DiscordLocale.pt_BR, "vincular-aredl" }
                 }),
-            "link-with-demonlist.description" => ValueTask.FromResult<IReadOnlyDictionary<DiscordLocale, string>>(
+            "link-aredl.description" => ValueTask.FromResult<IReadOnlyDictionary<DiscordLocale, string>>(
                 new Dictionary<DiscordLocale, string>
                 {
-                    { DiscordLocale.en_US, "Link your Discord account to your AREDL and POINTERCRATE profie." },
-                    { DiscordLocale.pt_BR, "Vincula sua conta Discord com seu perfil da AREDL e POINTERCRATE." }
+                    { DiscordLocale.en_US, "Link your Discord account to your AREDL profile." },
+                    { DiscordLocale.pt_BR, "Vincula sua conta Discord com seu perfil da AREDL." }
                 }),
             _ => ValueTask.FromResult<IReadOnlyDictionary<DiscordLocale, string>>(
                 new Dictionary<DiscordLocale, string>())

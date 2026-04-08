@@ -18,6 +18,12 @@ public sealed class DiscordBotService(
 
     public override async Task StartAsync(CancellationToken cancellationToken)
     {
+        logger.LogInformation("Starting Discord bot...");
+        await base.StartAsync(cancellationToken);
+    }
+
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    {
         var builder = DiscordClientBuilder.CreateDefault(
             _options.Token,
             DiscordIntents.Guilds);
@@ -31,6 +37,8 @@ public sealed class DiscordBotService(
 
         try
         {
+            //await _client!.BulkOverwriteGlobalApplicationCommandsAsync([]);
+            
             CommandMap.RegisterAllCommands(builder, _options.DebugGuildId);
             await DiscordEvents.RegisterAll(builder);
 
@@ -38,30 +46,24 @@ public sealed class DiscordBotService(
         }
         catch (Exception ex)
         {
-            logger.LogWarning(ex, "All commands/events registration failed.");
+            logger.LogWarning(ex, "Commands/events registration failed.");
         }
 
         _client = builder.Build();
 
         await _client.ConnectAsync();
-
+        
         logger.LogInformation(
             "Connected to Discord! Debug server id: {debugServerId}", _options.DebugGuildId);
-
-        await base.StartAsync(cancellationToken);
-
-        logger.LogInformation("Press Ctrl+C to shut down the bot service.");
-    }
-
-    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-    {
+        logger.LogInformation("Press Ctrl+C to shut down Discord bot.");
+        
         try
         {
             await Task.Delay(Timeout.Infinite, stoppingToken);
         }
         catch (OperationCanceledException)
         {
-            logger.LogInformation("Disconnected from Discord!");
+            logger.LogInformation("Shutdown signal received.");
         }
     }
 
@@ -69,7 +71,7 @@ public sealed class DiscordBotService(
     {
         if (_client is not null)
         {
-            logger.LogInformation("Disconnecting...");
+            logger.LogInformation("Disconnecting from Discord...");
             await _client.DisconnectAsync();
             logger.LogInformation("Disconnected. Bot is now offline.");
         }

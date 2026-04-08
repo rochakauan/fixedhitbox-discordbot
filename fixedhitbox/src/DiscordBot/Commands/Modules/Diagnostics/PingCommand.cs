@@ -12,7 +12,7 @@ public sealed class PingCommand
 {
 
     [Command("ping"), InteractionLocalizer<PingTranslator>]
-    [Description("Pings the bot to check its latency.")]
+    [Description("Pings the to check its latency.")]
     public static async ValueTask ExecuteAsync(CommandContext ctx)
     {
         var locale = ctx.As<SlashCommandContext>()?.Interaction.Locale;

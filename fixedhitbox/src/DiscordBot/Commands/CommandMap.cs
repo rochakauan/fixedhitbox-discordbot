@@ -17,7 +17,6 @@ public static class CommandMap
     {
         builder.UseCommands((_, extension) =>
         {
-            
             var slashCommandProcessor = new SlashCommandProcessor(new SlashCommandConfiguration
             {
                 NamingPolicy = new OrdinalKebabCaseInteractionNamingPolicy()

@@ -20,6 +20,7 @@ public sealed record AredlProfileResponse
     [JsonPropertyName("created_at")]
     public DateTime? CreatedInAredlAt { get; init; }
 
-    public IReadOnlyList<AredlRecordResponse>? Records { get; }
+    [JsonPropertyName("records")]
+    public IReadOnlyList<AredlRecordResponse>? Records { get; init; } = [];
 
 }
