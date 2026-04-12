@@ -1,6 +1,6 @@
 ﻿using DSharpPlus.Commands.Processors.SlashCommands.Localization;
 
-namespace fixedhitbox.DiscordBot.Commands.Translations;
+namespace fixedhitbox.DiscordBot.Commands.Translations.Diagnostics;
 
 public class PingTranslator : IInteractionLocalizer
 {

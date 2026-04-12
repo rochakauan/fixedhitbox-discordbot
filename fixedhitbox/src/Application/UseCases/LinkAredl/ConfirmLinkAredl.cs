@@ -1,5 +1,6 @@
 ﻿using fixedhitbox.Application.DTOs;
 using fixedhitbox.Application.Interfaces.Application;
+using fixedhitbox.Application.Interfaces.Application.Aredl;
 using fixedhitbox.Application.Interfaces.Infra.Aredl;
 using fixedhitbox.Application.Mappers.Aredl;
 using fixedhitbox.Domain.Entities;
@@ -11,10 +12,10 @@ using Microsoft.Extensions.Logging;
 
 namespace fixedhitbox.Application.UseCases.LinkAredl;
 
-public sealed class ConfirmLinkUseCase(
+public sealed class ConfirmLinkAredl(
     IAredlCache aredlCache,
     IUserRepository userRepository,
-    ILogger<ConfirmLinkUseCase> logger) : IConfirmLinkAredl
+    ILogger<ConfirmLinkAredl> logger) : IConfirmLinkAredl
 {
 
     private readonly string _errorPrefix = "[ConfirmLinkAredl]";

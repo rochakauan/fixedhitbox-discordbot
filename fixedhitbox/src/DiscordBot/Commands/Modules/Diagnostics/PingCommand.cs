@@ -4,6 +4,7 @@ using DSharpPlus.Commands;
 using DSharpPlus.Commands.Processors.SlashCommands;
 using DSharpPlus.Commands.Processors.SlashCommands.Localization;
 using fixedhitbox.DiscordBot.Commands.Translations;
+using fixedhitbox.DiscordBot.Commands.Translations.Diagnostics;
 using fixedhitbox.DiscordBot.Utils;
 
 namespace fixedhitbox.DiscordBot.Commands.Modules.Diagnostics;

@@ -86,7 +86,7 @@ public static class AredlResponseBuilder
 
             .AddField(BotLocalizer.Get(
                     "Aredl_ProfileFound_Field_Hardest", locale),
-                $"{hardestDemon ?? "❓"}",
+                $"<:extremedemon:1492859003070582865> {hardestDemon ?? "❓"}",
                 inline: true)
 
             .WithThumbnail(ctx.User.AvatarUrl)

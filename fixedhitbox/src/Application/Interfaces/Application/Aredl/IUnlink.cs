@@ -1,10 +1,10 @@
-using fixedhitbox.Application.DTOs;
+﻿using fixedhitbox.Application.DTOs;
 using fixedhitbox.Shared;
 
 namespace fixedhitbox.Application.Interfaces.Application.Aredl;
 
-public interface IConfirmLinkAredl
+internal interface IUnlink
 {
-    Task<ResultData<PendingAredlLinkDto>> ConfirmLinkAsync(
+    internal Task<ResultData<AredlProfileDto>> UnlinkAsync(
         ulong discordId, CancellationToken cancellationToken = default);
 }

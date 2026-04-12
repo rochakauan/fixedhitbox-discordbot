@@ -11,7 +11,7 @@ public static class DependencyInjection
     {
         services.AddTransient<IStartLinkAredl, StartLinkAredl>();
         services.AddTransient<ICancelLinkAredl, CancelLinkAredl>();
-        services.AddTransient<IConfirmLinkAredl, ConfirmLinkUseCase>();
+        services.AddTransient<IConfirmLinkAredl, ConfirmLinkAredl>();
 
         return services;
     }

@@ -4,7 +4,7 @@ using DSharpPlus.Commands.Processors.SlashCommands;
 using DSharpPlus.Commands.Processors.SlashCommands.Localization;
 using DSharpPlus.Entities;
 using fixedhitbox.Application.Interfaces.Application.Aredl;
-using fixedhitbox.DiscordBot.Commands.Translations;
+using fixedhitbox.DiscordBot.Commands.Translations.Aredl;
 using fixedhitbox.DiscordBot.Utils;
 using fixedhitbox.DiscordBot.Views.Aredl;
 using fixedhitbox.Domain.Enums;
@@ -13,7 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace fixedhitbox.DiscordBot.Commands.Modules.Aredl;
 
-public sealed class LinkAredlCommand()
+public sealed class LinkAredlCommand
 {
 
     [Command("link-aredl"), InteractionLocalizer<LinkAredlTranslator>]

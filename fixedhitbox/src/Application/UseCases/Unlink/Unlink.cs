@@ -2,11 +2,11 @@
 using fixedhitbox.Application.Interfaces.Application.Aredl;
 using fixedhitbox.Shared;
 
-namespace fixedhitbox.Application.UseCases.Inspect;
+namespace fixedhitbox.Application.UseCases.Unlink;
 
-internal sealed class InspectAredlPlayer : IInspectAredlPlayer
+internal sealed class Unlink : IUnlink
 {
-    public Task<ResultData<AredlProfileDto>> TrackProfileAsync(
+    public async Task<ResultData<AredlProfileDto>> UnlinkAsync(
         ulong discordId, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();

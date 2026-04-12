@@ -19,6 +19,26 @@
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
 
+    <!-- DIAGNOSTICS -->
+    <data name="InternalFailure_Content" xml:space="preserve">
+        <value>**Falha interna 💥**</value>
+    </data>
+    <data name="InternalFailure_Title" xml:space="preserve">
+        <value>Houve uma falha crítica nos serviços do sistema responsável pelo bot.</value>
+    </data>
+    <data name="InternalFailure_Description" xml:space="preserve">
+        <value>
+            :warning: | Nós estamos temporariamente desabilitando este comando. Expressamos nossas sinceras desculpas por este incidente.
+:loudspeaker: | Já notificamos nosso time técnico e asseguramos que o comando logo voltará a funcionar.
+        </value>
+    </data>
+    <data name="InternalFailure_Field_Repository" xml:space="preserve">
+        <value>Link para issues no repositório do GitHub.</value>
+    </data>
+    <data name="InternalFailure_Field_Repository_Param" xml:space="preserve">
+        <value>{0} Código fonte</value>
+    </data>
+    
     <!-- Ping -->
     <data name="Ping_Measuring" xml:space="preserve">
     <value>🏓 Medindo...</value>
@@ -148,7 +168,11 @@ Por favor, aguarde antes de tentar novamente.
     <data name="Aredl_Interaction_CancelLink_Success" xml:space="preserve">
         <value>❌ | **Vínculo cancelado.** Nenhuma alteração foi feita.</value>
     </data>
-    
+
+    <!-- FOOTERS -->
+    <data name="Diagnostics_Embeds_Footer" xml:space="preserve">
+        <value>Fixed Hitbox - bot • Serviço de diagnósticos</value>
+    </data>
     <data name="Aredl_Embeds_Footer" xml:space="preserve">
         <value>Fixed Hitbox - bot • Integração com a AREDL</value>
     </data>

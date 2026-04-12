@@ -2,7 +2,6 @@
 using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
 using fixedhitbox.Application.DTOs;
-using fixedhitbox.Application.Interfaces.Application;
 using fixedhitbox.Application.Interfaces.Application.Aredl;
 using fixedhitbox.DiscordBot.Utils;
 using fixedhitbox.Domain.Enums;

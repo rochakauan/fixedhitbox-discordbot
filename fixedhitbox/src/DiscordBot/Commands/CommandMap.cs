@@ -4,7 +4,6 @@ using DSharpPlus.Commands.Processors.SlashCommands;
 using fixedhitbox.DiscordBot.Commands.Modules.Aredl;
 using fixedhitbox.DiscordBot.Commands.Modules.Diagnostics;
 using fixedhitbox.DiscordBot.Commands.Processors;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace fixedhitbox.DiscordBot.Commands;
 
@@ -23,7 +22,8 @@ public static class CommandMap
 
             extension.AddCommands([
                 typeof(PingCommand),
-                typeof(LinkAredlCommand), 
+                typeof(LinkAredlCommand),
+                typeof(UnlinkCommand),
                 typeof(InspectPlayerCommand)]);
             
             extension.AddProcessor(slashCommandProcessor);
