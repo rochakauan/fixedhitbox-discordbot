@@ -9,6 +9,7 @@ database/
 *suo
 *.userosscache
 *sln.docstates
+*sln.DotSettings.user
 .vscode/
 .idea/
 

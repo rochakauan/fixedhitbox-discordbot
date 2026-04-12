@@ -4,7 +4,7 @@ using fixedhitbox.Domain.Domain_DTOs;
 namespace fixedhitbox.Domain.Entities;
 
 public sealed class LinkedUser : Entity
-{ 
+{
     public ulong DiscordId { get; init; }
 
     public string Username { get; init; } = string.Empty;
@@ -14,11 +14,28 @@ public sealed class LinkedUser : Entity
     public Guid AredlUserId { get; init; }
     public int? Country { get; init; }
     public DateTime CreatedInAredlAt { get; init; }
-    
+
     public DateTime LinkedAtUtc { get; private set; }
     public DateTime LastUpdateAtUtc { get; private set; }
 
     private LinkedUser() { }
+
+    internal LinkedUser(
+        ulong discordId,
+        string username,
+        string globalName,
+        string? description,
+        Guid aredlUserId,
+        int? country
+    )
+    {
+        DiscordId = discordId;
+        Username = username;
+        GlobalName = globalName;
+        Description = description;
+        AredlUserId = aredlUserId;
+        Country = country;
+    }
 
     public static LinkedUser CreateFromPending(PendingAredlLink dto)
         => new()

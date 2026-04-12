@@ -63,7 +63,7 @@ O sistema da AREDL parece estar offline ou demorou demais para responder.
         <value>🧲 | Perfil já vinculado.</value>
     </data>
     <data name="Aredl_AlreadyLinked_Description" xml:space="preserve">
-        <value>Você já tem o seu perfil da AREDL vinculada à sua conta do Discord.</value>
+        <value>Você já tem o seu perfil da AREDL vinculado à sua conta do Discord.</value>
     </data>
     <data name="Aredl_AlreadyLinked_Field_UserProfile" xml:space="preserve">
         <value>Link para a página do seu perfil</value>
@@ -122,7 +122,7 @@ Por favor, aguarde antes de tentar novamente.
     <data name="Aredl_Interaction_ConfirmLink_Success" xml:space="preserve">
         <value>
             ✅ | **Vínculo confirmado!** Agora sua conta AREDL está conectada ao seu Discord.
-+ Dica: digite "/records" para ver seus recordes!
++ Dica: digite "/recordes" para ver os seus recordes!
         </value>
     </data>
 
@@ -140,8 +140,8 @@ Por favor, aguarde antes de tentar novamente.
 
     <data name="Aredl_Interaction_CancelLink_AlreadyLinked" xml:space="preserve">
         <value>
-            ℹ️ | Este pedido não pode mais ser cancelado, porque o vínculo já foi confirmado.
-            ⛓️‍💥 | Dica: digite "/unlink" se realmente deseja fazer isso.
+            ℹ️ | Este pedido não pode mais ser cancelado porque o vínculo já foi confirmado.
+⛓️‍💥 | Dica: digite "/desvincular" se realmente deseja fazer isso.
         </value>
     </data>
 

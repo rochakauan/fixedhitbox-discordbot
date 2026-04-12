@@ -19,41 +19,41 @@ public sealed class StartLinkAredl(
     {
         var cacheKeys = aredlCache.TryGetAny(discordId);
         var resultCache = ReturnCacheResultIfFound(cacheKeys, out var isSatisfied);
-        
+
         switch (isSatisfied)
         {
-            case false when resultCache.Status == EResultStatus.UnexpectedError:
+            // case false when resultCache.Status == EResultStatus.UnexpectedError:
             case true:
                 return resultCache;
         }
-        
+
         var existingUser = await userRepository
             .GetByDiscordIdAsync(discordId, cancelationToken);
 
         if (existingUser is not null)
         {
             var dto = AredlProfileMapper.MapFromEntity(existingUser);
-            
+
             if (!dto.Success) return ResultData<PendingAredlLinkDto>
                 .UnexpectedError(dto.Error ?? "[StartLinkAredl] AredlProfileMapper could not map an existing user.");
-            
+
             aredlCache.SetLinkedUser(discordId, dto.Value!);
             return ResultData<PendingAredlLinkDto>.AlreadyLinked(dto.Value!);
         }
 
         var cachedProfile = aredlCache.GetProfile(discordId);
-        
+
         if (cachedProfile.Status == ECacheResultStatus.ProfileFound)
         {
             var map = AredlProfileMapper.MapToPendingDto(cachedProfile.Data!);
-            
+
             if (!map.Success)
                 return ResultData<PendingAredlLinkDto>
                     .UnexpectedError(map.Error ?? "AredlProfileMapper could not map a profile.");
-            
+
             return ResultData<PendingAredlLinkDto>.PendingConfirmation(map.Value!);
         }
-        
+
         return await FetchProfileFromApi(discordId, cancelationToken);
     }
 
@@ -66,25 +66,25 @@ public sealed class StartLinkAredl(
             isSatisfied = false;
             return ResultData<PendingAredlLinkDto>.CacheExpired();
         }
-        
+
         switch (cache.Status)
         {
             case ECacheResultStatus.AlreadyLinked:
                 isSatisfied = true;
                 return ResultData<PendingAredlLinkDto>.AlreadyLinked(cache.Data!);
-            
+
             case ECacheResultStatus.PendingConfirmation:
                 isSatisfied = true;
                 return ResultData<PendingAredlLinkDto>.PendingConfirmation(cache.Data!);
-            
+
             case ECacheResultStatus.NotFound:
                 isSatisfied = true;
                 return ResultData<PendingAredlLinkDto>.NotFound();
-            
-            case ECacheResultStatus.UnexpectedError:
-                isSatisfied = false;
-                return ResultData<PendingAredlLinkDto>.UnexpectedError(
-                    "Something went wrong with AredlCache service response.");
+
+            // case ECacheResultStatus.UnexpectedError:
+            //     isSatisfied = false;
+            //     return ResultData<PendingAredlLinkDto>.UnexpectedError(
+            //         "Something went wrong with AredlCache service response.");
             default:
                 isSatisfied = false;
                 return default!;
@@ -101,34 +101,34 @@ public sealed class StartLinkAredl(
             case EAredlApiStatus.NotFound:
                 aredlCache.SetNotFound(discordId);
                 return ResultData<PendingAredlLinkDto>.NotFound("Profile not found at aredl.net.");
-            
+
             case EAredlApiStatus.Timeout:
                 return ResultData<PendingAredlLinkDto>.ConnectionError("AREDL API took too long to respond.");
-            
+
             case EAredlApiStatus.ConnectionError:
                 return ResultData<PendingAredlLinkDto>.ConnectionError(
                     apiResult.ErrorMessage);
-            
+
             case EAredlApiStatus.InvalidResponse:
             case EAredlApiStatus.UnexpectedError:
                 return ResultData<PendingAredlLinkDto>.UnexpectedError(
                     apiResult.ErrorMessage ?? "An unexpected error occurred while processing the API response.");
 
             case EAredlApiStatus.Success:
-            {
-                var resultPending = apiResult.Data;
-                
-                if (resultPending is null)
-                    return ResultData<PendingAredlLinkDto>
-                        .ValidationError("AredlProfileMapper returned a null data in IAredlApiService.");
+                {
+                    var resultPending = apiResult.Data;
 
-                var map = AredlProfileMapper.MapFromPendingDto(resultPending);
-                aredlCache.SetProfile(discordId, map.Value!);
-                
-                aredlCache.SetPendingLink(discordId, resultPending);
-                return ResultData<PendingAredlLinkDto>.PendingConfirmation(resultPending);
-            }
-            
+                    if (resultPending is null)
+                        return ResultData<PendingAredlLinkDto>
+                            .ValidationError("AredlProfileMapper returned a null data in IAredlApiService.");
+
+                    var map = AredlProfileMapper.MapFromPendingDto(resultPending);
+                    aredlCache.SetProfile(discordId, map.Value!);
+
+                    aredlCache.SetPendingLink(discordId, resultPending);
+                    return ResultData<PendingAredlLinkDto>.PendingConfirmation(resultPending);
+                }
+
             default:
                 return ResultData<PendingAredlLinkDto>.UnexpectedError(
                     apiResult.ErrorMessage ?? "Unhandled API response.");
