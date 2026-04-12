@@ -1,4 +1,5 @@
-﻿using fixedhitbox.Application.Interfaces.Application.Aredl;
+﻿using fixedhitbox.Application.Interfaces.Application;
+using fixedhitbox.Application.Interfaces.Application.Aredl;
 using fixedhitbox.Application.UseCases.LinkAredl;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -10,7 +11,8 @@ public static class DependencyInjection
     {
         services.AddTransient<IStartLinkAredl, StartLinkAredl>();
         services.AddTransient<ICancelLinkAredl, CancelLinkAredl>();
-        
+        services.AddTransient<IConfirmLinkAredl, ConfirmLinkUseCase>();
+
         return services;
     }
 }

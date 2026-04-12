@@ -45,7 +45,7 @@ public static class AredlResponseBuilder
             .WithDescription(BotLocalizer.Get("Aredl_AlreadyLinked_Description", locale))
             .WithColor(DiscordColor.Red)
             .AddField(BotLocalizer.Get("Aredl_AlreadyLinked_Field_UserProfile", locale),
-                $"https://aredl.net/profile/user{username}",
+                $"https://aredl.net/profile/user/{username}",
                 inline: true)
             .WithFooter(BotLocalizer.Get("Aredl_Embeds_Footer", locale), ctx.Client.CurrentUser.AvatarUrl)
             .WithTimestamp(DateTime.UtcNow.ToLocalTime());
@@ -64,31 +64,31 @@ public static class AredlResponseBuilder
         bool shortSentence = false)
     {
         var locale = ctx.As<SlashCommandContext>().Interaction.Locale;
-        
+
         var hardestRecord = dto.Records?.FirstOrDefault();
         var hardestDemon = hardestRecord?.Level.Name;
-        
+
         var userMention = ctx.User.Mention;
         var embed = new DiscordEmbedBuilder()
             .WithTitle(BotLocalizer.Get("Aredl_ProfileFound_Title", locale))
             .WithDescription(BotLocalizer.Get("Aredl_ProfileFound_Description", locale, userMention))
             .WithColor(DiscordColor.Yellow)
-            
+
             .AddField(BotLocalizer.Get(
                     "Aredl_ProfileFound_Field_Player", locale),
                 dto.GlobalName,
                 inline: true)
-            
+
             .AddField(BotLocalizer.Get(
                     "Aredl_ProfileFound_Field_Country", locale),
                 CountryCodeTranslator.IsoCodeToDiscordEmojiFlag(dto.Country),
                 inline: true)
-            
+
             .AddField(BotLocalizer.Get(
                     "Aredl_ProfileFound_Field_Hardest", locale),
                 $"{hardestDemon ?? "❓"}",
                 inline: true)
-            
+
             .WithThumbnail(ctx.User.AvatarUrl)
             .WithFooter(BotLocalizer.Get("Aredl_Embeds_Footer", locale),
                 ctx.Client.CurrentUser.AvatarUrl)
